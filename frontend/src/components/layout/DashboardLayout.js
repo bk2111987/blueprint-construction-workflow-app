@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const DashboardLayout = ({ children }) => {
   const navigate = useNavigate();
-  const { user, logout, isContractor, isVendor, isSubcontractor, isCustomer } = useAuth();
+  const { user, logout } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const handleLogout = () => {
@@ -13,7 +13,7 @@ const DashboardLayout = ({ children }) => {
   };
 
   const getNavItems = () => {
-    if (isContractor) {
+    if (user.role === 'contractor') {
       return [
         { name: 'Projects', path: '/contractor/projects', icon: 'fa-briefcase' },
         { name: 'Bids', path: '/contractor/bids', icon: 'fa-gavel' },
@@ -21,21 +21,21 @@ const DashboardLayout = ({ children }) => {
         { name: 'Documents', path: '/contractor/documents', icon: 'fa-file' }
       ];
     }
-    if (isVendor) {
+    if (user.role === 'vendor') {
       return [
         { name: 'Inventory', path: '/vendor/inventory', icon: 'fa-box' },
         { name: 'Orders', path: '/vendor/orders', icon: 'fa-shopping-cart' },
         { name: 'Quotes', path: '/vendor/quotes', icon: 'fa-file-invoice-dollar' }
       ];
     }
-    if (isSubcontractor) {
+    if (user.role === 'subcontractor') {
       return [
         { name: 'Available Projects', path: '/subcontractor/projects', icon: 'fa-briefcase' },
         { name: 'My Bids', path: '/subcontractor/bids', icon: 'fa-gavel' },
         { name: 'Schedule', path: '/subcontractor/schedule', icon: 'fa-calendar' }
       ];
     }
-    if (isCustomer) {
+    if (user.role === 'customer') {
       return [
         { name: 'My Projects', path: '/customer/projects', icon: 'fa-home' },
         { name: 'Contractors', path: '/customer/contractors', icon: 'fa-hard-hat' },
@@ -46,12 +46,12 @@ const DashboardLayout = ({ children }) => {
   };
 
   return (
-    <div className="h-screen flex overflow-hidden bg-gray-100">
+    <div className="h-screen flex overflow-hidden bg-blueprint-light">
       {/* Sidebar */}
       <div className={`${isSidebarOpen ? 'block' : 'hidden'} lg:block lg:flex-shrink-0`}>
         <div className="fixed inset-y-0 flex flex-col w-64">
           {/* Sidebar component */}
-          <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto bg-indigo-700">
+          <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto bg-blueprint-gold">
             <div className="flex items-center flex-shrink-0 px-4">
               <span className="text-xl font-semibold text-white">Blueprint</span>
             </div>
@@ -60,7 +60,7 @@ const DashboardLayout = ({ children }) => {
                 <a
                   key={item.name}
                   href={item.path}
-                  className="group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md text-white hover:bg-indigo-600"
+                  className="group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md text-white hover:bg-blueprint-yellow hover:text-blueprint-gold transition-colors duration-150"
                 >
                   <i className={`fas ${item.icon} mr-3 h-6 w-6`}></i>
                   {item.name}
@@ -76,7 +76,7 @@ const DashboardLayout = ({ children }) => {
         <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
+            className="px-4 border-r border-blueprint-gray text-blueprint-gray focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blueprint-yellow lg:hidden"
           >
             <span className="sr-only">Open sidebar</span>
             <i className="fas fa-bars"></i>
@@ -87,7 +87,7 @@ const DashboardLayout = ({ children }) => {
             </div>
             <div className="ml-4 flex items-center md:ml-6">
               {/* Language toggle */}
-              <button className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <button className="p-1 rounded-full text-blueprint-gray hover:text-blueprint-gold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blueprint-yellow">
                 <span className="sr-only">Change language</span>
                 <i className="fas fa-globe"></i>
               </button>
@@ -95,10 +95,10 @@ const DashboardLayout = ({ children }) => {
               {/* Profile dropdown */}
               <div className="ml-3 relative">
                 <div className="flex items-center">
-                  <span className="text-gray-700 mr-2">{user?.firstName} {user?.lastName}</span>
+                  <span className="text-blueprint-gold mr-2">{user?.firstName} {user?.lastName}</span>
                   <button
                     onClick={handleLogout}
-                    className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="p-1 rounded-full text-blueprint-gray hover:text-blueprint-gold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blueprint-yellow"
                   >
                     <span className="sr-only">Logout</span>
                     <i className="fas fa-sign-out-alt"></i>
@@ -109,7 +109,7 @@ const DashboardLayout = ({ children }) => {
           </div>
         </div>
 
-        <main className="flex-1 relative overflow-y-auto focus:outline-none">
+        <main className="flex-1 relative overflow-y-auto focus:outline-none bg-blueprint-light">
           <div className="py-6">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
               {children}
