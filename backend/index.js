@@ -90,6 +90,46 @@ app.use('/api/bids', bidRoutes);
 app.use('/api/materials', materialRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/disputes', require('./routes/disputes'));
+
+// ERP Integration webhook endpoint example
+app.post('/api/erp/stock-update', async (req, res) => {
+  try {
+    const { sku, stockLevel } = req.body;
+    const material = await require('./models').Material.findOne({ where: { sku } });
+    if (!material) {
+      return res.status(404).json({ error: 'Material not found' });
+    }
+    await material.update({ stockLevel, isAvailable: stockLevel > 0 });
+    // Optionally emit socket event for low stock alert
+    if (stockLevel <= material.minStockLevel) {
+      io.to(`vendor_${material.vendorId}`).emit('low_stock_alert', material);
+    }
+    res.json({ message: 'Stock updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Scheduled job or endpoint for alerts on expiring licenses/permits (simplified example)
+const checkExpiringLicenses = async () => {
+  const projects = await require('./models').Project.findAll({
+    where: {
+      permitExpiryDate: {
+        [require('sequelize').Op.lte]: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // next 30 days
+      }
+    }
+  });
+  projects.forEach(project => {
+    io.to(`contractor_${project.contractorId}`).emit('license_expiry_alert', {
+      projectId: project.id,
+      permitExpiryDate: project.permitExpiryDate
+    });
+  });
+};
+
+// Run checkExpiringLicenses daily (example using setInterval)
+setInterval(checkExpiringLicenses, 24 * 60 * 60 * 1000); // every 24 hours
 
 // Basic route
 app.get('/', (req, res) => {
