@@ -6,63 +6,69 @@ module.exports = (sequelize) => {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
+      primaryKey: true,
+    },
+    role: {
+      type: DataTypes.ENUM('contractor', 'vendor', 'subcontractor', 'customer', 'admin'),
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
       unique: true,
+      allowNull: false,
       validate: {
-        isEmail: true
-      }
+        isEmail: true,
+      },
     },
-    password: {
+    passwordHash: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
-    role: {
-      type: DataTypes.ENUM('contractor', 'vendor', 'subcontractor', 'customer'),
-      allowNull: false
-    },
-    firstName: {
+    name: {
       type: DataTypes.STRING,
-      allowNull: false
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     phone: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     language: {
       type: DataTypes.ENUM('en', 'fr'),
-      defaultValue: 'en'
+      defaultValue: 'en',
     },
     twoFactorEnabled: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
+      defaultValue: false,
     },
     twoFactorSecret: {
-      type: DataTypes.STRING
-    }
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
   }, {
+    tableName: 'users',
+    timestamps: true,
     hooks: {
       beforeCreate: async (user) => {
-        if (user.password) {
-          user.password = await bcrypt.hash(user.password, 10);
+        if (user.passwordHash) {
+          const salt = await bcrypt.genSalt(10);
+          user.passwordHash = await bcrypt.hash(user.passwordHash, salt);
         }
       },
       beforeUpdate: async (user) => {
-        if (user.changed('password')) {
-          user.password = await bcrypt.hash(user.password, 10);
+        if (user.changed('passwordHash')) {
+          const salt = await bcrypt.genSalt(10);
+          user.passwordHash = await bcrypt.hash(user.passwordHash, salt);
         }
-      }
-    }
+      },
+    },
   });
 
   User.prototype.validatePassword = async function(password) {
-    return await bcrypt.compare(password, this.password);
+    return bcrypt.compare(password, this.passwordHash);
   };
 
   return User;

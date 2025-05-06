@@ -5,79 +5,43 @@ module.exports = (sequelize) => {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
-    },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    budget: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false
-    },
-    startDate: {
-      type: DataTypes.DATE
-    },
-    endDate: {
-      type: DataTypes.DATE
-    },
-    status: {
-      type: DataTypes.ENUM('draft', 'bidding', 'in_progress', 'completed', 'cancelled'),
-      defaultValue: 'draft'
-    },
-    location: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    permitRequired: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    permitUrl: {
-      type: DataTypes.STRING
-    },
-    blueprintUrl: {
-      type: DataTypes.STRING
-    },
-    milestones: {
-      type: DataTypes.JSONB,
-      defaultValue: []
-    },
-    paymentMilestones: {
-      type: DataTypes.JSONB,
-      defaultValue: []
-    },
-    licenseExpiryDate: {
-      type: DataTypes.DATE
-    },
-    permitExpiryDate: {
-      type: DataTypes.DATE
+      primaryKey: true,
     },
     contractorId: {
       type: DataTypes.UUID,
-      references: {
-        model: 'Users',
-        key: 'id'
-      }
+      allowNull: false,
     },
-    customerId: {
-      type: DataTypes.UUID,
-      references: {
-        model: 'Users',
-        key: 'id'
-      }
-    }
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    budget: {
+      type: DataTypes.DECIMAL(12, 2),
+      allowNull: true,
+    },
+    startDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
+    endDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
+    status: {
+      type: DataTypes.ENUM('draft', 'open', 'in_progress', 'completed', 'cancelled'),
+      defaultValue: 'draft',
+    },
+  }, {
+    tableName: 'projects',
+    timestamps: true,
   });
 
   Project.associate = (models) => {
-    Project.belongsTo(models.User, { as: 'contractor', foreignKey: 'contractorId' });
-    Project.belongsTo(models.User, { as: 'customer', foreignKey: 'customerId' });
-    Project.hasMany(models.Bid, { as: 'bids' });
-    Project.hasMany(models.Task, { as: 'tasks' });
+    Project.belongsTo(models.User, { foreignKey: 'contractorId', as: 'contractor' });
   };
 
   return Project;
