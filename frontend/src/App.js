@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
 import PrivateRoute from './components/auth/PrivateRoute';
 
 // Auth Components
@@ -36,73 +36,69 @@ const DashboardRouter = () => {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="min-h-screen bg-gray-100">
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/verify-2fa" element={<TwoFactorAuth />} />
-            
-            {/* Dashboard Routes */}
-            <Route path="/dashboard" element={<DashboardRouter />} />
+    <div className="min-h-screen bg-gray-100">
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/verify-2fa" element={<TwoFactorAuth />} />
+        
+        {/* Dashboard Routes */}
+        <Route path="/dashboard" element={<DashboardRouter />} />
 
-            {/* Role-specific Routes */}
-            <Route
-              path="/contractor/*"
-              element={
-                <PrivateRoute allowedRoles={['contractor']}>
-                  <ContractorDashboard />
-                </PrivateRoute>
-              }
-            />
+        {/* Role-specific Routes */}
+        <Route
+          path="/contractor/*"
+          element={
+            <PrivateRoute allowedRoles={['contractor']}>
+              <ContractorDashboard />
+            </PrivateRoute>
+          }
+        />
 
-            <Route
-              path="/vendor/*"
-              element={
-                <PrivateRoute allowedRoles={['vendor']}>
-                  <VendorDashboard />
-                </PrivateRoute>
-              }
-            />
+        <Route
+          path="/vendor/*"
+          element={
+            <PrivateRoute allowedRoles={['vendor']}>
+              <VendorDashboard />
+            </PrivateRoute>
+          }
+        />
 
-            <Route
-              path="/subcontractor/*"
-              element={
-                <PrivateRoute allowedRoles={['subcontractor']}>
-                  <SubcontractorDashboard />
-                </PrivateRoute>
-              }
-            />
+        <Route
+          path="/subcontractor/*"
+          element={
+            <PrivateRoute allowedRoles={['subcontractor']}>
+              <SubcontractorDashboard />
+            </PrivateRoute>
+          }
+        />
 
-            <Route
-              path="/customer/*"
-              element={
-                <PrivateRoute allowedRoles={['customer']}>
-                  <CustomerDashboard />
-                </PrivateRoute>
-              }
-            />
+        <Route
+          path="/customer/*"
+          element={
+            <PrivateRoute allowedRoles={['customer']}>
+              <CustomerDashboard />
+            </PrivateRoute>
+          }
+        />
 
-            {/* Root Route - Redirect to dashboard or login */}
-            <Route
-              path="/"
-              element={
-                localStorage.getItem('token') ? (
-                  <Navigate to="/dashboard" replace />
-                ) : (
-                  <Navigate to="/login" replace />
-                )
-              }
-            />
+        {/* Root Route - Redirect to dashboard or login */}
+        <Route
+          path="/"
+          element={
+            localStorage.getItem('token') ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
 
-            {/* Catch all route - redirect to dashboard */}
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
-        </div>
-      </Router>
-    </AuthProvider>
+        {/* Catch all route - redirect to dashboard */}
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </div>
   );
 }
 
