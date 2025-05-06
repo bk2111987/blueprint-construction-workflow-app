@@ -47,6 +47,16 @@ module.exports = (sequelize) => {
       type: DataTypes.JSONB,
       defaultValue: []
     },
+    paymentMilestones: {
+      type: DataTypes.JSONB,
+      defaultValue: []
+    },
+    licenseExpiryDate: {
+      type: DataTypes.DATE
+    },
+    permitExpiryDate: {
+      type: DataTypes.DATE
+    },
     contractorId: {
       type: DataTypes.UUID,
       references: {
