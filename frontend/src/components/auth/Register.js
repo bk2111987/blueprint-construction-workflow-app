@@ -54,11 +54,8 @@ const Register = () => {
         throw new Error(data.error || 'Registration failed');
       }
 
-      // Store token and user data
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      
-      // Redirect to dashboard
       navigate('/dashboard');
     } catch (err) {
       setError(err.message || 'An error occurred during registration');
@@ -68,11 +65,11 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-blueprint-light py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your account
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-blueprint-gold">
+            Create your Blueprint account
           </h2>
         </div>
         
@@ -90,7 +87,7 @@ const Register = () => {
                 name="firstName"
                 type="text"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-blueprint-gray placeholder-blueprint-gray text-gray-900 rounded-t-md focus:outline-none focus:ring-blueprint-yellow focus:border-blueprint-yellow focus:z-10 sm:text-sm"
                 placeholder="First Name"
                 value={formData.firstName}
                 onChange={handleChange}
@@ -102,7 +99,7 @@ const Register = () => {
                 name="lastName"
                 type="text"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-blueprint-gray placeholder-blueprint-gray text-gray-900 focus:outline-none focus:ring-blueprint-yellow focus:border-blueprint-yellow focus:z-10 sm:text-sm"
                 placeholder="Last Name"
                 value={formData.lastName}
                 onChange={handleChange}
@@ -114,7 +111,7 @@ const Register = () => {
                 name="email"
                 type="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-blueprint-gray placeholder-blueprint-gray text-gray-900 focus:outline-none focus:ring-blueprint-yellow focus:border-blueprint-yellow focus:z-10 sm:text-sm"
                 placeholder="Email address"
                 value={formData.email}
                 onChange={handleChange}
@@ -125,7 +122,7 @@ const Register = () => {
                 id="phone"
                 name="phone"
                 type="tel"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-blueprint-gray placeholder-blueprint-gray text-gray-900 focus:outline-none focus:ring-blueprint-yellow focus:border-blueprint-yellow focus:z-10 sm:text-sm"
                 placeholder="Phone Number"
                 value={formData.phone}
                 onChange={handleChange}
@@ -136,7 +133,7 @@ const Register = () => {
                 id="role"
                 name="role"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-blueprint-gray placeholder-blueprint-gray text-gray-900 focus:outline-none focus:ring-blueprint-yellow focus:border-blueprint-yellow focus:z-10 sm:text-sm"
                 value={formData.role}
                 onChange={handleChange}
               >
@@ -153,7 +150,7 @@ const Register = () => {
                 name="password"
                 type="password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-blueprint-gray placeholder-blueprint-gray text-gray-900 focus:outline-none focus:ring-blueprint-yellow focus:border-blueprint-yellow focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
@@ -165,7 +162,7 @@ const Register = () => {
                 name="confirmPassword"
                 type="password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-blueprint-gray placeholder-blueprint-gray text-gray-900 rounded-b-md focus:outline-none focus:ring-blueprint-yellow focus:border-blueprint-yellow focus:z-10 sm:text-sm"
                 placeholder="Confirm Password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
@@ -177,7 +174,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blueprint-gold hover:bg-blueprint-yellow hover:text-blueprint-gold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blueprint-yellow transition-colors duration-150"
             >
               {loading ? (
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -189,11 +186,11 @@ const Register = () => {
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-blueprint-gray">
               Already have an account?{' '}
               <Link
                 to="/login"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+                className="font-medium text-blueprint-gold hover:text-blueprint-yellow"
               >
                 Sign in
               </Link>
